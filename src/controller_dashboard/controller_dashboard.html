@@ -1,0 +1,55 @@
+<html>
+<head>
+	<title>Controller Dashboard</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" type="text/css"></link>
+	<link rel="stylesheet" href="style.css" type="text/css"></link>
+</head>
+
+<body>
+
+
+<div class="dashboard-container" id="dashboard">
+
+<h1 class="title">Controller Dashboard</h1>
+<div class="commands">
+	<div v-if="!initialized">
+		<form style="text-align: center;">
+			<button>Initialize</button> with
+			<input type="text" size="2" value="5"> </input>
+			Nodes
+		</form>
+	</div>
+</div>
+
+<div class="nodes-state">
+</div>
+
+<div class="command-history">
+</div>
+
+</div>
+
+
+
+
+
+
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+	
+var app = new Vue({
+  el: '#dashboard',
+  data: {
+    message: 'Hello Vue!',
+    initialized: false,
+
+  }
+});
+
+
+</script>
+
+
+</html>

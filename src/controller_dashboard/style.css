@@ -1,0 +1,25 @@
+.title {
+	text-align: center;
+}
+
+.nodes-state{
+	background-color:#ffffff;
+	width:62%;
+	float:left;
+	height:100vh;
+	border-right: 1vw solid #eeeeee; 
+    box-sizing: border-box;
+    margin:0;
+    padding:0;	
+}
+
+.command-history{
+	background-color:#dddddd;
+	width:38%;
+	float:left;
+	height:100vh;
+	margin:0;
+	padding:0;
+  box-sizing: border-box;
+}
+
