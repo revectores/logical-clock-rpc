@@ -11,14 +11,16 @@
 <div class="dashboard-container" id="dashboard">
 
 <h1 class="title">Controller Dashboard</h1>
-<div class="commands">
-	<div v-if="!initialized">
-		<form style="text-align: center;">
-			<button>Initialize</button> with
-			<input type="text" size="2" value="5"> </input>
-			Nodes
-		</form>
+<div class="command-container">
+	<div v-if="initialized" class="command">
+		<button v-on:click="shutdown()">Shutdown All Nodes</button>
 	</div>
+	<div v-else>
+		<button v-on:click="init(node_count)">Initialize</button> with
+		<input type="text" size="2" v-model="node_count"> </input>
+		Nodes
+	</div>
+
 </div>
 
 <div class="nodes-state">
@@ -40,12 +42,25 @@
 <script>
 	
 var app = new Vue({
-  el: '#dashboard',
-  data: {
-    message: 'Hello Vue!',
-    initialized: false,
-
-  }
+	el: '#dashboard',
+	data: {
+		message: 'Hello Vue!',
+		initialized: false,
+		node_count: 5,
+		update_node_id: 0,
+	},
+	methods: {
+		init: function(node_count) {
+			console.log('init', node_count);
+			this.initialized = true;
+		}, 
+		get_all_vectors: function(update_node_id) {
+			console.log('get_all_vectors')
+		},
+		update_state: function() {
+			console.log('update_', update_node_id)
+		},
+	}
 });
 
 

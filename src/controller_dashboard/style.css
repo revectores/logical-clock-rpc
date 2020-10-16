@@ -23,3 +23,12 @@
   box-sizing: border-box;
 }
 
+.command-container {
+	width: 100%;
+	text-align: center;
+}
+
+.command {
+	float: left;
+	width: 33%;
+}
