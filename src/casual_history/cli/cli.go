@@ -11,15 +11,18 @@ import (
 )
 
 
-func createNodes(id2addr map[int]controller.Addr){
-	fmt.Println(len(id2addr))
-	
+func createNodes(id2addr map[int]controller.Addr) []*exec.Cmd {
+	var nodes []*exec.Cmd
+
 	for _, addr := range id2addr {
-		cmd := exec.Command("../node/node", strconv.Itoa(int(addr.Port)))
-		go cmd.Run()
-		fmt.Println(cmd)
+		node := exec.Command("../node/node", strconv.Itoa(int(addr.Port)))
+		go node.Run()
+
+		nodes = append(nodes, node)
+		fmt.Println(node)
 	}
 
+	return nodes;
 	/*
 	for id := range id2addr {
 		controller.Init(id)
@@ -32,6 +35,8 @@ func validate(params []string) {
 
 
 func main() {
+	var nodes []*exec.Cmd
+
 	reader := bufio.NewReader(os.Stdin)
 	controller.LoadConfigure()
 	fmt.Println(controller.Id2addr)
@@ -43,7 +48,7 @@ func main() {
 
 		switch params[0] {
 		case "c", "create":
-			createNodes(controller.Id2addr)
+			nodes = createNodes(controller.Id2addr)
 		case "i", "init":
 			if len(params) != 2 {
 				fmt.Println("usage: i(nit) [node-id]")
@@ -73,6 +78,9 @@ func main() {
 			receiverId, _ := strconv.Atoi(params[2])
 			controller.SendMessage(senderId, receiverId)
 		case "e", "exit":
+			for _, node := range nodes {
+				node.Process.Kill()
+			}
 			return;
 		default:
 		}

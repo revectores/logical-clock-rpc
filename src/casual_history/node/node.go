@@ -23,6 +23,7 @@ var history []string
 var thisId int
 var initialized bool
 var nodeMode int
+var count int
 
 var LOCALHOST = [4]uint8{127, 0, 0, 1}
 const DEV_MODE = 0
@@ -77,6 +78,7 @@ func (p *NodeService) Init(id2addr map[int]Addr, reply *int) error {
 		// TOOD: PROD_MODE
 	}
 
+	count = 0
 	*reply = thisId
 	return nil
 }
@@ -88,27 +90,31 @@ func (p *NodeService) GetHistory(_ int, reply *[]string) error {
 }
 
 func (p *NodeService) UpdateState(_ int, reply *int) error {
-	var number = 0
-	for i:=0; i<len(history);i++{
-		if history[0] == string(thisId){
-			number++
-		}
-	}
-	var name = string(thisId)+"."+string(number)
-	history = append(history, name)
+	count++
+	newEventName := fmt.Sprintf("%d.%d", thisId, count)
+	history = append(history, newEventName)
 	*reply = 0
 	return nil
 }
 
-func (p *NodeService) Message(history []string, reply *int) error {
-	var number = 0
-	for i:=0; i<len(history);i++{
-		if history[0] == string(thisId){
-			number++
+func (p *NodeService) Message(historyMsg []string, reply *int) error {
+	count++
+	newEventName := fmt.Sprintf("%d.%d", thisId, count)
+	history = append(history, newEventName)
+
+	for _, eventRemote := range historyMsg {
+		duplicate := false
+		for _, eventLocal := range history {
+			if eventLocal == eventRemote {
+				duplicate = true
+				break
+			}
+		}
+		if !duplicate {
+			history = append(history, eventRemote)
 		}
 	}
-	var name = string(thisId)+"."+string(number)
-	history = append(history, name)
+
 	*reply = 0
 	return nil
 }
