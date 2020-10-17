@@ -37,6 +37,7 @@ func validate(params []string) {
 func main() {
 	var nodes []*exec.Cmd
 
+
 	reader := bufio.NewReader(os.Stdin)
 	controller.LoadConfigure()
 	fmt.Println(controller.Id2addr)
@@ -45,6 +46,10 @@ func main() {
 		cmd, _ := reader.ReadString('\n')
 		cmd = strings.TrimSpace(cmd)
 		params := strings.Fields(cmd)
+
+		if len(params) == 0 {
+			continue
+		}
 
 		switch params[0] {
 		case "c", "create":

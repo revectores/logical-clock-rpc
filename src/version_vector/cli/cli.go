@@ -47,6 +47,10 @@ func main() {
 		cmd = strings.TrimSpace(cmd)
 		params := strings.Fields(cmd)
 
+		if len(params) == 0 {
+			continue
+		}
+
 		switch params[0] {
 		case "c", "create":
 			nodes = createNodes(controller.Id2addr)

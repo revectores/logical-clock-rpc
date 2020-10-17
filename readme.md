@@ -28,7 +28,7 @@ Refer to [Vector Clock Implementation Based on RPC](https://github.com/revectore
 
 4. Run `cli`. The commands and their interpretations can be found in [Vector Clock Implementation Based on RPC](https://github.com/revectores/logical-clock-rpc/blob/main/docs/Vector%20Clock%20Implementation%20Based%20on%20RPC.md).
 
-
+Notes: Please make sure that port 30000-30004 is unused before execute `c`(normally they are), if not, kill the owner processes or change `conf/id2addr.conf` to bind nodes to free ports.
 
 Here an example is given for the  interaction in vector clock:
 

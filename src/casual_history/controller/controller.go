@@ -21,9 +21,7 @@ var Id2addr map[int]Addr
 func LoadConfigure() {
 	id2addrJSON, _ := ioutil.ReadFile("../../conf/id2addr.json")
 	json.Unmarshal(id2addrJSON, &Id2addr)
-	fmt.Println(Id2addr)
 }
-
 
 
 func getAddrString(id int) string {
