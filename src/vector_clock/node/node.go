@@ -105,6 +105,7 @@ func (p *NodeService) Init(id2addr map[int]Addr, reply *int) error {
 		// TOOD: PROD_MODE
 	}
 
+	initialized = true
 	*reply = thisId
 	return nil
 }
@@ -116,6 +117,11 @@ func (p *NodeService) GetVector(_ int, reply *[]int) error {
 }
 
 func (p *NodeService) UpdateState(_ int, reply *int) error {
+	if (!initialized) {
+		*reply = -1
+		return nil
+	}
+
 	clockVector[thisId]++
 
 	*reply = 0
@@ -123,6 +129,11 @@ func (p *NodeService) UpdateState(_ int, reply *int) error {
 }
 
 func (p *NodeService) Message(clockVectorMsg []int, reply *int) error {
+	if (!initialized) {
+		*reply = -1
+		return nil
+	}
+
 	clockVector[thisId]++
 	clockVector = vmax(clockVector, clockVectorMsg)
 
@@ -132,16 +143,26 @@ func (p *NodeService) Message(clockVectorMsg []int, reply *int) error {
 
 
 func (p *NodeService) SendMessage(id int, reply *int) error {
+	if (!initialized) {
+		*reply = -1
+		return nil
+	}
+
 	client := rpcDial(id)
 	
-	var i int;
-	err := client.Call("NodeService.Message", clockVector, &i)
-	
+	var res int;
+	err := client.Call("NodeService.Message", clockVector, &res)
+
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	*reply = 0;
+	if res == -1 {
+		*reply = -1
+		return nil
+	}
+
+	*reply = 0
 	return nil
 }
 

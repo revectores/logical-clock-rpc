@@ -21,7 +21,6 @@ var Id2addr map[int]Addr
 func LoadConfigure() {
 	id2addrJSON, _ := ioutil.ReadFile("../../conf/id2addr.json")
 	json.Unmarshal(id2addrJSON, &Id2addr)
-	fmt.Println(Id2addr)
 }
 
 
@@ -47,49 +46,49 @@ func rpcDial(id int) *rpc.Client {
 }
 
 
-func Init(id int){
+func Init(id int) int {
 	client := rpcDial(id)
 
-	var i int
-	err := client.Call("NodeService.Init", Id2addr, &i)
+	var thisId int
+	err := client.Call("NodeService.Init", Id2addr, &thisId)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(i)
+	return thisId
 }
 
 
-func UpdateState(id int){
+func UpdateState(id int) int {
 	client := rpcDial(id)
 
-	var i int
-	err := client.Call("NodeService.UpdateState", 0, &i)
+	var res int
+	err := client.Call("NodeService.UpdateState", 0, &res)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(i)
+	return res
 }
 
 
-func SendMessage(senderId int, receiverId int) {
+func SendMessage(senderId int, receiverId int) int {
 	client := rpcDial(senderId)
 
-	var i int
-	err := client.Call("NodeService.SendMessage", receiverId, &i)
+	var res int
+	err := client.Call("NodeService.SendMessage", receiverId, &res)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(i)
+	return res
 }
 
 
-func GetVector(id int) {
+func GetVector(id int) []int {
 	client := rpcDial(id)
 
 	var clockVector []int;
@@ -99,7 +98,7 @@ func GetVector(id int) {
 		log.Fatal(err)
 	}
 
-	fmt.Println(clockVector)
+	return clockVector
 }
 
 

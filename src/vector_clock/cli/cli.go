@@ -34,12 +34,15 @@ func validate(params []string) {
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 	controller.LoadConfigure()
-	fmt.Println(controller.Id2addr)
 	for {
 		fmt.Print(">> ")
 		cmd, _ := reader.ReadString('\n')
 		cmd = strings.TrimSpace(cmd)
 		params := strings.Fields(cmd)
+
+		if len(params) == 0 {
+			continue
+		}
 
 		switch params[0] {
 		case "c", "create":
@@ -50,28 +53,32 @@ func main() {
 				continue
 			}
 			id, _ := strconv.Atoi(params[1]) 
-			controller.Init(id)
+			thisId := controller.Init(id)
+			fmt.Println(thisId)
 		case "g", "get":
 			if len(params) != 2 {
 				fmt.Println("usage: g(et) [node-id]")
 				continue
 			}
 			id, _ := strconv.Atoi(params[1])
-			controller.GetVector(id)
+			clockVector := controller.GetVector(id)
+			fmt.Println(clockVector)
 		case "u", "update":
 			if len(params) != 2 {
 				fmt.Println("usage: u(pdate) [node-id]")
 				continue
 			}
 			id, _ := strconv.Atoi(params[1])
-			controller.UpdateState(id)
+			res := controller.UpdateState(id)
+			fmt.Println(res)
 		case "s", "send":
 			if len(params) != 3 {
 				fmt.Println("usage: s(end) [sender-node-id] [receiver-node-id]")
 			}
 			senderId, _ := strconv.Atoi(params[1])
 			receiverId, _ := strconv.Atoi(params[2])
-			controller.SendMessage(senderId, receiverId)
+			res := controller.SendMessage(senderId, receiverId)
+			fmt.Println(res)
 		case "e", "exit":
 			return;
 		default:
